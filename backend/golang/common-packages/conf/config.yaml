@@ -1,0 +1,87 @@
+{
+    "mongodb": {
+        "schema": {
+            "USER_DB": "authdb",
+            "INTERNAL_DB": "taskloggerdb",
+        },
+        "defaultSchema":"taskloggerdb",
+        "collection": {
+            "user_info": {
+                "db": "USER_DB"
+            },
+            "user_credentials": {
+                "db": "USER_DB"
+            },
+            "domains": {
+                "db": "INTERNAL_DB"
+            },
+            "content": {
+                "db": "INTERNAL_DB"
+            },
+            "test": {
+                "db": "INTERNAL_DB"
+            }
+        }
+    },
+    "messaging":{
+        "rabbitmq":{
+            "username":"guest",
+            "password":"guest",
+            "host":"localhost",
+            "amqpPort":"5672",
+            "mqqtPort":"1883"
+
+      }
+    },
+    "database": {
+        "mongo": {
+            "schemas": {
+                "authdb": {
+                    "url": [
+                        "localhost:27017"
+                        #"localhost:27018",
+                        #"localhost:27019"
+                    ],
+                     # "username": "admin",
+                     # "password": "admin123",
+                     # "authenticationDatabase": "admin",
+                    "poolLimit": 4096,
+                    "timeOut": 5
+                },
+                "taskloggerdb": {
+                    "url": [
+                        "localhost:27017"
+                    ],
+                    "poolLimit": 4096,
+                    "timeOut": 5
+                }
+            }
+        },
+
+      "redis": {
+            # All timeout mentioned in seconds
+            "dialTimeout":10,
+            "readTimeout":10,
+            "writeTimeout":10,
+            "poolSize":100,
+            "poolTimeout":30,
+            "idleTimeout":100,
+            "idleCheckFrequency":100,
+            "clusterEnabled":false,
+            #"password":"",
+            # configure addrs for cluster and comment out addr
+            # "addrs":["127.0.0.1:7000","127.0.0.1:7001","127.0.0.1:7002","127.0.0.1:7003","127.0.0.1:7004","127.0.0.1:7005"],
+            # configure addr for single instance and comment out addrs
+            "addr":"127.0.0.1:6379"
+        },
+        "hadoop": {}
+    },
+    "apps": {
+        "taskapp": {
+            "address": "localhost:8096"
+        },
+        "messageconsumerapp": {
+            "address": "localhost:8097"
+        }
+    }
+}
