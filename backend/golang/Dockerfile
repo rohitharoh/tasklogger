@@ -2,6 +2,9 @@ FROM golang:latest
 
 LABEL maintainer="rohitha.k95@gmail.com"
 
+
+RUN mkdir /github.com/tb/task-logger
+ADD . /github.com/tb/task-logger
 WORKDIR /github.com/tb/task-logger
 
 COPY go.mod .
@@ -16,12 +19,5 @@ ENV PORT 8086
 
 RUN go build -o main .
 
-CMD ["./"]
+CMD ["/github.com/tb/cache-manager/backend/golang/taskapp/server.go"]
 
-FROM golang:1.9.2
-/github.com/tb/task-logger
-RUN mkdir /github.com/tb/rohitha/dockerexampleout
-ADD . /github.com/tb/rohitha/dockerexampleout
-WORKDIR /github.com/tb/rohitha/dockerexampleout
-RUN go build -o main .
-CMD ["/github.com/tb/rohitha/dockerexampleout/main"]

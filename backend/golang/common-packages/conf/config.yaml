@@ -78,10 +78,8 @@
     },
     "apps": {
         "taskapp": {
-            "address": "localhost:8096"
+            "address": "localhost:8098"
         },
-        "messageconsumerapp": {
-            "address": "localhost:8097"
-        }
+
     }
 }

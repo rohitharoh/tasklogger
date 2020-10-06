@@ -14,6 +14,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"time"
 )
+
 type TaskService interface {
 	AddTask(logger *logrus.Entry, createTaskInput models.AddTaskInput, emailId string) ([]byte, error)
 	ListTask(logger *logrus.Entry, taskStatus string, emailId string) ([]byte, error)
@@ -45,10 +46,10 @@ func AddTask(logger *logrus.Entry, createTaskInput models.AddTaskInput, emailId 
 
 	fmt.Println("_id", taskObj.Id)
 
-//cache.NewRedisCache("127.0.0.1", 0, system.REDIS_DEFAULT_EXPIRATION_TIME).Flush("")
+	//cache.NewRedisCache("127.0.0.1", 0, system.REDIS_DEFAULT_EXPIRATION_TIME).Flush("")
 	client := cache.NewRedisCache("127.0.0.1", 0, system.REDIS_DEFAULT_EXPIRATION_TIME)
 
-	client.Set(system.TASKS_COLLECTION + ":" + taskObj.Id, &taskObj)
+	client.Set(system.TASKS_COLLECTION+":"+taskObj.Id, &taskObj)
 
 	collectionName := system.TASKS_COLLECTION
 	databaseName := system.GetDatabaseName(collectionName)
@@ -65,7 +66,6 @@ func AddTask(logger *logrus.Entry, createTaskInput models.AddTaskInput, emailId 
 	return finalResponse, nil
 
 }
-
 
 func ListTask(logger *logrus.Entry, taskStatus string, emailId string, skip int) ([]byte, error) {
 
@@ -85,7 +85,7 @@ func ListTask(logger *logrus.Entry, taskStatus string, emailId string, skip int)
 
 	key := system.TASKS_COLLECTION + ":" + "*"
 	taskList = cache.NewRedisCache(viper.GetString("redis.addr"), 0, system.REDIS_DEFAULT_EXPIRATION_TIME).List(key)
-	cache.NewRedisCache(viper.GetString("redis.addr"), 0, system.REDIS_DEFAULT_EXPIRATION_TIME).PSubPub(key)
+	//cache.NewRedisCache(viper.GetString("redis.addr"), 0, system.REDIS_DEFAULT_EXPIRATION_TIME).PSubPub(key)
 
 	var totalCount int
 	if len(taskList) == 0 {
@@ -170,10 +170,9 @@ func TaskDetails(logger *logrus.Entry, emailId string, recordId string) ([]byte,
 	}
 	var taskDetails *models.Task
 	taskDetails = cache.NewRedisCache("127.0.0.1:6379", 0, system.REDIS_DEFAULT_EXPIRATION_TIME).Get(recordId)
-	fmt.Println("post-----cache------->", taskDetails)
 
-	key := system.TASKS_COLLECTION + ":" + recordId
-   cache.NewRedisCache(viper.GetString("redis.addr"), 0, system.REDIS_DEFAULT_EXPIRATION_TIME).PSubPub(key)
+	//key := system.TASKS_COLLECTION + ":" + recordId
+	// cache.NewRedisCache(viper.GetString("redis.addr"), 0, system.REDIS_DEFAULT_EXPIRATION_TIME).PSubPub(key)
 	if taskDetails == nil {
 		fmt.Println("post is nil")
 		collectionName := system.TASKS_COLLECTION
